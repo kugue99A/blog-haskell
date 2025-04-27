@@ -1,41 +1,30 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE OverloadedStrings #-}
 
-module Main (main) where
-
-import Data.Aeson
-import GHC.Generics
 import Network.Wai
-import Network.Wai.Handler.Warp
-import Servant
-import System.IO
+import Network.Wai.Handler.Warp (run)
+import Network.HTTP.Types (status200)
+import qualified Data.ByteString.Char8 as BS
+import qualified Data.CaseInsensitive as CI
+import qualified Data.Aeson as A
+import Data.Aeson (object, (.=))
 
--- API型定義
-type HealthCheckAPI = "health" :> Get '[JSON] HealthStatus
-
--- ヘルスステータスデータ型
-data HealthStatus = HealthStatus
-  { status :: String
-  } deriving (Eq, Show, Generic)
-
-instance ToJSON HealthStatus
-instance FromJSON HealthStatus
-
--- サーバー実装
-server :: Server HealthCheckAPI
-server = return $ HealthStatus "ok"
-
--- API定義
-healthCheckAPI :: Proxy HealthCheckAPI
-healthCheckAPI = Proxy
-
--- アプリケーション
-app :: Application
-app = serve healthCheckAPI server
-
+-- | メインアプリケーション
 main :: IO ()
 main = do
-  let port = 8080
-  hPutStrLn stderr $ "Starting server on port " ++ show port
-  run port app
+  putStrLn "http://localhost:3000/"
+  run 3000 app
+
+-- | シンプルなHTTPアプリケーション
+app :: Application
+app _req respond = respond $ jsonResponse helloWorldData
+
+-- | JSONレスポンスを生成する関数
+jsonResponse :: A.Value -> Response
+jsonResponse value = responseLBS 
+  status200
+  [(CI.mk (BS.pack "Content-Type"), BS.pack "application/json")]
+  (A.encode value)
+
+-- | レスポンスのJSONデータ
+helloWorldData :: A.Value
+helloWorldData = object [ "message" .= ("hello world" :: String) ]

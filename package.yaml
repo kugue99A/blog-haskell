@@ -2,9 +2,9 @@ name:                blog-haskell
 version:             0.1.0.0
 github:              "githubuser/blog-haskell"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2024 Author name here"
+author:              "kugue99A"
+maintainer:          "hisabisa99yohey@gmail.com"
+copyright:           "2025 kugue99A"
 
 extra-source-files:
 - README.md
@@ -12,13 +12,20 @@ extra-source-files:
 description:         HTTPリクエストに対して "hello world" を返すシンプルなサーバー
 
 dependencies:
-- base >= 4.7 && < 5
-- wai
-- warp
-- http-types
-- bytestring
-- aeson
-- case-insensitive
+  - base
+  - wai
+  - warp
+  - http-types
+  - bytestring
+  - case-insensitive
+  - aeson
+  - text
+  - persistent
+  - monad-logger
+  - resource-pool
+  - mtl
+  - transformers
+  - time
 
 executables:
   blog-haskell-exe:

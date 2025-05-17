@@ -11,8 +11,8 @@ import Data.Aeson (object, (.=))
 -- | メインアプリケーション
 main :: IO ()
 main = do
-  putStrLn "http://localhost:3000/"
-  run 3000 app
+  putStrLn "サーバーを起動します。 http://localhost:8000/"
+  run 8000 app
 
 -- | シンプルなHTTPアプリケーション
 app :: Application
